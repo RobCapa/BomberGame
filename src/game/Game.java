@@ -38,6 +38,7 @@ public class Game {
 
     private void start() {
         KeyboardObserver keyboardObserver = new KeyboardObserver();
+        keyboardObserver.setDaemon(true);
         keyboardObserver.start();
         Drawing drawing = new Drawing(this);
 
