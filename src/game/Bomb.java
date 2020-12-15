@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Bomb extends Coordinates implements Runnable {
     private static int bombLevel = 1;
-    private List<Flame> flame;
+    private List<Flame> flames;
     private boolean isExploded;
 
-    public Bomb (int x, int y){
+    public Bomb(int x, int y) {
         super(x, y);
         new Thread(this).start();
     }
@@ -18,21 +18,20 @@ public class Bomb extends Coordinates implements Runnable {
     }
 
     private void createFlame() {
-        List<Flame> flame = new ArrayList<>();
-        flame.add(new Flame(getX(), getY()));
-        for(int i = 1; i <= bombLevel; i++) {
-            flame.add(new Flame(getX() + i, getY()));
-            flame.add(new Flame(getX() - i, getY()));
-            flame.add(new Flame(getX(), getY() + i));
-            flame.add(new Flame(getX(), getY() - i));
+        List<Flame> flames = new ArrayList<>();
+        flames.add(new Flame(getX(), getY()));
+        for (int i = 1; i <= bombLevel; i++) {
+            flames.add(new Flame(getX() + i, getY()));
+            flames.add(new Flame(getX() - i, getY()));
+            flames.add(new Flame(getX(), getY() + i));
+            flames.add(new Flame(getX(), getY() - i));
         }
-        validateFlame(flame);
-        this.flame = flame;
+        validateFlame(flames);
+        this.flames = flames;
     }
 
-    private void validateFlame(List<Flame> flame) {
-        flame.removeIf(currentFlame -> currentFlame.getX() < 0 || currentFlame.getX() >= Game.getGame().getHeight() ||
-                currentFlame.getY() < 0 || currentFlame.getY() >= Game.getGame().getWidth());
+    private void validateFlame(List<Flame> flames) {
+        flames.removeIf(flame -> !Game.getGame().doesNotViolateBoundaries(flame));
     }
 
     @Override
@@ -47,7 +46,7 @@ public class Bomb extends Coordinates implements Runnable {
     }
 
     public List<Flame> getFlame() {
-        return flame;
+        return flames;
     }
 
     public boolean isExploded() {

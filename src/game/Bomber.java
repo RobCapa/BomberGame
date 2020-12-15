@@ -1,5 +1,7 @@
 package game;
 
+import java.util.function.Predicate;
+
 public class Bomber extends Coordinates {
     private boolean isAlive;
     private static Bomber bomber;
@@ -13,18 +15,18 @@ public class Bomber extends Coordinates {
         int offsetX = x + direction.getX();
         int offsetY = y + direction.getY();
 
-        /*
-        * Тут костыль с bomberCheck. Я создаю стену с предполагаемыми новыми Х и Y, чтобы проверить
-        * будет ли bomberCheck касаться какой-нибудь стены. Иначе нужно вручную прописывать цикл,
-        * в котором будет проход по всем существующим UnbreakableWalls и Walls и сравнение с их полями Х и Y
-        */
-        Game game = Game.getGame();
-        Wall bomberCheck = new Wall(offsetX, offsetY);
-        if (offsetX >= 0 && offsetX < game.getHeight() && offsetY >= 0 && offsetY < game.getWidth() &&
-            !game.getUnbreakableWalls().contains(bomberCheck) && !game.getWalls().contains(bomberCheck)) {
+        Coordinates bomberCheck = new Coordinates(offsetX, offsetY) {};
+        if (Game.getGame().doesNotViolateBoundaries(bomberCheck) && nothingTouches(bomberCheck)) {
             x = offsetX;
             y = offsetY;
         }
+    }
+
+    private boolean nothingTouches(Coordinates bomberCheck) {
+        Game game = Game.getGame();
+        return !game.getUnbreakableWalls().contains(bomberCheck)
+                && !game.getWalls().contains(bomberCheck)
+                && !game.getBombs().contains(bomberCheck);
     }
 
     public static Bomber getInstance() {

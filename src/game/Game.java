@@ -51,20 +51,11 @@ public class Game {
                 KeyEvent event = keyboardObserver.getEventFromTop();
 
                 switch (event.getKeyCode()) {
-                    case KeyEvent.VK_LEFT:
-                        bomber.move(Direction.LEFT);
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        bomber.move(Direction.RIGHT);
-                        break;
-                    case KeyEvent.VK_UP:
-                        bomber.move(Direction.UP);
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        bomber.move(Direction.DOWN);
-                        break;
-                    case KeyEvent.VK_SPACE:
-                        createBomb();
+                    case KeyEvent.VK_LEFT -> bomber.move(Direction.LEFT);
+                    case KeyEvent.VK_RIGHT -> bomber.move(Direction.RIGHT);
+                    case KeyEvent.VK_UP -> bomber.move(Direction.UP);
+                    case KeyEvent.VK_DOWN -> bomber.move(Direction.DOWN);
+                    case KeyEvent.VK_SPACE -> createBomb();
                 }
             }
 
@@ -74,7 +65,7 @@ public class Game {
 
             try {
                 Thread.sleep(300);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
         System.out.println("========================================== Game Over ==========================================");
@@ -96,13 +87,12 @@ public class Game {
     }
 
     private void checkFlames() {
-        for (Bomb.Flame flame : flames) {
-            walls.removeIf(wall -> flame.equals(wall));
-
+        flames.forEach(flame -> {
+            walls.removeIf(flame::equals);
             if (bomber.equals(flame)) {
                 bomber.setAlive(false);
             }
-        }
+        });
     }
 
     private void checkBonus() {
@@ -153,10 +143,13 @@ public class Game {
     }
 
     private boolean nothingTouches(Coordinates object) {
-        if (bomber.equals(object) || unbreakableWalls.contains(object) || unbreakableWalls.contains(object) || walls.contains(object)) {
-            return false;
-        }
-        return true;
+        return !bomber.equals(object)
+                && !unbreakableWalls.contains(object)
+                && !walls.contains(object);
+    }
+
+    public boolean doesNotViolateBoundaries(Coordinates object) {
+        return object.getX() >= 0 && object.getX() < height && object.getY() >= 0 && object.getY() < width;
     }
 
     public static Game getGame() {

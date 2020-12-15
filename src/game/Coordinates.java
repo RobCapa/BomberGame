@@ -22,7 +22,7 @@ public abstract class Coordinates {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof Coordinates)) return false;
+        if (!(o instanceof Coordinates)) return false;
         Coordinates that = (Coordinates) o;
         return x == that.x &&
                 y == that.y;
