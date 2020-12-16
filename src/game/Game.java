@@ -32,7 +32,7 @@ public class Game {
 
     public static void main(String[] args) {
         Bomber bomber = Bomber.getInstance();
-        new Game(10, 10, 50, bomber);
+        new Game(10, 10, 20, bomber);
         game.start();
     }
 
@@ -89,8 +89,13 @@ public class Game {
     private void checkFlames() {
         flames.forEach(flame -> {
             walls.removeIf(flame::equals);
-            if (bomber.equals(flame)) {
+
+            if (touchBomber(flame)) {
                 bomber.setAlive(false);
+            }
+
+            if (!touchBonus(flame)) {
+                createBonus();
             }
         });
     }
@@ -116,7 +121,7 @@ public class Game {
             int y = (int) (Math.random() * width);
             Wall newWall = new Wall(x, y);
 
-            if (nothingTouches(newWall)) {
+            if (!touchBomberOrAnyWall(newWall)) {
                 walls.add(newWall);
             }
         }
@@ -135,21 +140,41 @@ public class Game {
             int y = (int) (Math.random() * width);
             Bonus newBonus = new Bonus(x, y);
 
-            if (nothingTouches(newBonus)) {
+            if (!touchBomberOrAnyWall(newBonus)) {
                 bonus = newBonus;
                 return;
             }
         }
     }
 
-    private boolean nothingTouches(Coordinates object) {
-        return !bomber.equals(object)
-                && !unbreakableWalls.contains(object)
-                && !walls.contains(object);
+    private boolean touchBomberOrAnyWall(Coordinates object) {
+        return touchBomber(object)
+                && touchUnbreakableWalls(object)
+                && touchWalls(object);
     }
 
-    public boolean doesNotViolateBoundaries(Coordinates object) {
-        return object.getX() >= 0 && object.getX() < height && object.getY() >= 0 && object.getY() < width;
+    public boolean touchWalls(Coordinates object) {
+        return walls.contains(object);
+    }
+
+    public boolean touchBonus(Coordinates object) {
+        return bonus.equals(object);
+    }
+
+    public boolean touchUnbreakableWalls(Coordinates object) {
+        return unbreakableWalls.contains(object);
+    }
+
+    public boolean touchBomber(Coordinates object) {
+        return bomber.equals(object);
+    }
+
+    public boolean touchBombs(Coordinates object) {
+        return bombs.contains(object);
+    }
+
+    public boolean violateBoundaries(Coordinates object) {
+        return object.getX() < 0 || object.getX() >= height || object.getY() < 0 || object.getY() >= width;
     }
 
     public static Game getGame() {

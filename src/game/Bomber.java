@@ -1,7 +1,5 @@
 package game;
 
-import java.util.function.Predicate;
-
 public class Bomber extends Coordinates {
     private boolean isAlive;
     private static Bomber bomber;
@@ -16,17 +14,17 @@ public class Bomber extends Coordinates {
         int offsetY = y + direction.getY();
 
         Coordinates bomberCheck = new Coordinates(offsetX, offsetY) {};
-        if (Game.getGame().doesNotViolateBoundaries(bomberCheck) && nothingTouches(bomberCheck)) {
+        if (!Game.getGame().violateBoundaries(bomberCheck) && !touchBombsOrAnyWall(bomberCheck)) {
             x = offsetX;
             y = offsetY;
         }
     }
 
-    private boolean nothingTouches(Coordinates bomberCheck) {
+    private boolean touchBombsOrAnyWall(Coordinates bomberCheck) {
         Game game = Game.getGame();
-        return !game.getUnbreakableWalls().contains(bomberCheck)
-                && !game.getWalls().contains(bomberCheck)
-                && !game.getBombs().contains(bomberCheck);
+        return game.touchUnbreakableWalls(bomberCheck)
+                || game.touchWalls(bomberCheck)
+                || game.touchBombs(bomberCheck);
     }
 
     public static Bomber getInstance() {
