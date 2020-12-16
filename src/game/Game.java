@@ -94,7 +94,7 @@ public class Game {
                 bomber.setAlive(false);
             }
 
-            if (!touchBonus(flame)) {
+            if (touchBonus(flame)) {
                 createBonus();
             }
         });
