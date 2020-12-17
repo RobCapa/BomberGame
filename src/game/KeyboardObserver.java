@@ -9,6 +9,9 @@ import java.awt.event.KeyListener;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
+/**
+ * Это не мой класс, писал тебе об этом. Тут много лишнего, но не хочу поломать, поэтому так оставил
+ */
 public class KeyboardObserver extends Thread {
     private Queue<KeyEvent> keyEvents = new ArrayBlockingQueue<>(100);
 

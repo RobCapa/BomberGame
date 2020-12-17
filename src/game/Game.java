@@ -38,7 +38,6 @@ public class Game {
 
     private void start() {
         KeyboardObserver keyboardObserver = new KeyboardObserver();
-        keyboardObserver.setDaemon(true);
         keyboardObserver.start();
         Drawing drawing = new Drawing(this);
 
@@ -101,7 +100,7 @@ public class Game {
     }
 
     private void checkBonus() {
-        if (bonus.equals(bomber)) {
+        if (touchBonus(bomber)) {
             Bomb.levelUp();
             createBonus();
         }
@@ -128,9 +127,9 @@ public class Game {
     }
 
     private void createBomb() {
-        Bomb bomb = new Bomb(bomber.getX(), bomber.getY());
-        if (!bombs.contains(bomb)) {
-            bombs.add(bomb);
+        Bomb newBomb = new Bomb(bomber.getX(), bomber.getY());
+        if (!touchBombs(newBomb)) {
+            bombs.add(newBomb);
         }
     }
 

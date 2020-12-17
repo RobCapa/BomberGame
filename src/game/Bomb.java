@@ -48,7 +48,7 @@ public class Bomb extends Coordinates implements Runnable {
      * значит оставляем.
      * Затем в любом случае убирается все последующее пламя после него, так как дальше оно идти не должно.
      * Ну и если remainingLengthFlame == 0, то это значит, что в одном из 4 направлений мы дошли до конца, значит нужно снова вернуть количество последующего пламени
-     * до уровня взрыва бомбы. Так повторять, пока не будет отброшено лишнее пламя по всем 4 направлениям
+     * до уровня взрыва бомбы. Так повторять, пока не будет отброшено лишнее пламя по всем 4 направлениям. Может, можно лучше способ придумать, но я так сделал
      */
     private void validateFlame(List<Flame> flames) {
         Iterator<Flame> iterator = flames.iterator();
@@ -101,14 +101,6 @@ public class Bomb extends Coordinates implements Runnable {
 
         public Flame(int x, int y) {
             super(x, y);
-        }
-
-        @Override
-        public String toString() {
-            return "Flame{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    '}';
         }
     }
 }
