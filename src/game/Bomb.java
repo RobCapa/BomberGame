@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Bomb extends Coordinates implements Runnable {
-    private static int bombLevel = 3;
+    private static int bombLevel = 1;
     private List<Flame> flames;
     private boolean isExploded;
 

@@ -149,8 +149,8 @@ public class Game {
 
     private boolean touchBomberOrAnyWall(Coordinates object) {
         return touchBomber(object)
-                && touchUnbreakableWalls(object)
-                && touchWalls(object);
+                || touchUnbreakableWalls(object)
+                || touchWalls(object);
     }
 
     public boolean touchWalls(Coordinates object) {
